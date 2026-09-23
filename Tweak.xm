@@ -3,7 +3,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-static NSString *const GMPLogPath = @"/var/mobile/GoogleMapsProbe.log";
+static NSString *const GMPLogPath = @"/var/mobile/Documents/GoogleMapsProbe.log";
 static NSMutableSet<NSString *> *gSeen;
 
 static void GMPLog(NSString *fmt, ...) {
@@ -78,7 +78,9 @@ static void GMPWalk(id obj, NSUInteger depth) {
 %ctor {
     @autoreleasepool {
         gSeen=[NSMutableSet set];
+        [[NSFileManager defaultManager] createDirectoryAtPath:@"/var/mobile/Documents" withIntermediateDirectories:YES attributes:nil error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:GMPLogPath error:nil];
+        NSLog(@"[GMP] CTOR bundle=%@", NSBundle.mainBundle.bundleIdentifier);
         GMPLog(@"START bundle=%@ version=%@",NSBundle.mainBundle.bundleIdentifier,
                [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
     }
