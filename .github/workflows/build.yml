@@ -1,0 +1,26 @@
+name: Build GoogleMapsProbe
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install ldid xz
+      - name: Install RootHide Theos
+        run: |
+          git clone --recursive https://github.com/roothide/theos.git $HOME/theos
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+      - name: Install SDK
+        run: |
+          mkdir -p $THEOS/sdks
+          curl -L -o /tmp/sdk.tar.xz https://github.com/theos/sdks/releases/download/master-146e41f/iPhoneOS16.5.sdk.tar.xz
+          tar -xf /tmp/sdk.tar.xz -C $THEOS/sdks
+      - name: Build
+        run: make clean package FINALPACKAGE=1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GoogleMapsProbe-rootless-DEB
+          path: packages/*.deb
