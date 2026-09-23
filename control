@@ -1,0 +1,9 @@
+Package: com.sushibta.googlemapsprobe
+Name: GoogleMapsProbe
+Version: 0.1.0
+Architecture: iphoneos-arm64
+Description: Read-only Google Maps runtime search-result probe
+Maintainer: sushibta
+Author: sushibta
+Section: Tweaks
+Depends: mobilesubstrate
